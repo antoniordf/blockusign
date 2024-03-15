@@ -194,6 +194,8 @@ sponsoredUserOperation.preVerificationGas = gasEstimate.preVerificationGas
 sponsoredUserOperation.maxFeePerGas = maxGasPriceResult.fast.maxFeePerGas
 sponsoredUserOperation.maxPriorityFeePerGas = maxGasPriceResult.fast.maxPriorityFeePerGas
 
+usePaymaster = true;
+
 if (usePaymaster) {
   const sponsorResult = await pimlicoPaymasterClient.sponsorUserOperation({
     userOperation: sponsoredUserOperation,
