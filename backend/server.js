@@ -9,6 +9,9 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 const DOCAMATIC_API_KEY = process.env.DOCAMATIC_API_KEY || "";
 
+// Cache duration
+const CACHE_DURATION = 60 * 5 * 1000; // For example, 5 minutes
+
 // Initialize Express
 const app = express();
 app.use(bodyParser.json());
@@ -19,8 +22,19 @@ app.get("/", (req, res) => {
   console.log("Welcome to Blockuchain");
 });
 
+const cache = {};
+
 // Define a POST endpoint to generate PDFs
 app.post("/generate-pdf", async (req, res) => {
+  const cacheKey = sortedStringify(req.body);
+
+  if (cache[cacheKey]) {
+    if (Date.now() - cache[cacheKey].timestamp < CACHE_DURATION) {
+      res.json(cache[cacheKey]);
+      return;
+    }
+  }
+
   try {
     const { source, format, media } = req.body;
 
@@ -36,7 +50,11 @@ app.post("/generate-pdf", async (req, res) => {
 
     const jsonResponse = await docResponse.json();
     if (docResponse.ok) {
-      res.json(jsonResponse);
+      cache[cacheKey] = {
+        timestamp: Date.now(),
+        data: jsonResponse,
+      };
+      res.json(cache[cacheKey]);
     } else {
       res.status(docResponse.status).json(jsonResponse);
     }
@@ -49,3 +67,13 @@ app.post("/generate-pdf", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+// A function to sort the keys of the JSON object and stringify it
+function sortedStringify(obj) {
+  const sortedKeys = Object.keys(obj).sort();
+  const sortedObj = {};
+  for (const key of sortedKeys) {
+    sortedObj[key] = obj[key];
+  }
+  return JSON.stringify(sortedObj);
+}
