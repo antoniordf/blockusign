@@ -36,16 +36,29 @@ app.post("/generate-pdf", async (req, res) => {
   }
 
   try {
-    const { source, format, media } = req.body;
+    const { title, signature1, signature2, etherscan, txHash } = req.body;
+
+    const templateJSON = {
+      template: "qr_label",
+      width: 8,
+      height: 8,
+      unit: "in",
+      data: {
+        title: `${title}`,
+        subtitle: `Signature 1: ${signature1} / \nSignature 2: ${signature2}`,
+        qr: `${etherscan}`,
+        label: `Transaction: ${txHash}`,
+      },
+    };
 
     // Call Docamatic API
-    const docResponse = await fetch("https://docamatic.com/api/v1/pdf", {
+    const docResponse = await fetch("https://docamatic.com/api/v1/template", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${DOCAMATIC_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ source, format, media }),
+      body: JSON.stringify(templateJSON),
     });
 
     const jsonResponse = await docResponse.json();
@@ -59,7 +72,10 @@ app.post("/generate-pdf", async (req, res) => {
       res.status(docResponse.status).json(jsonResponse);
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error.message });
   }
 });
 
