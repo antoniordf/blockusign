@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@chainlink/functions-toolkit": "^0.2.8"
+    "@chainlink/env-enc": "^1.0.5",
+    "@chainlink/functions-toolkit": "^0.2.8",
+    "ethers": "^6.11.1"
   }
 }
