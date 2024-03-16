@@ -28,6 +28,8 @@ const cache = {};
 app.post("/generate-pdf", async (req, res) => {
   const cacheKey = sortedStringify(req.body);
 
+  setTimeout(() => {}, 2000);
+
   if (cache[cacheKey]) {
     if (Date.now() - cache[cacheKey].timestamp < CACHE_DURATION) {
       res.json(cache[cacheKey]);
