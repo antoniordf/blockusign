@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@chainlink/functions-toolkit": "^0.2.8"
+  }
+}
