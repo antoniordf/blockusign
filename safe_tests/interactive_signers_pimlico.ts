@@ -3,14 +3,13 @@ import * as readline from "readline";
 import dotenv from "dotenv";
 import {getAccountNonce, bundlerActions, ENTRYPOINT_ADDRESS_V06} from "permissionless";
 import {pimlicoBundlerActions, pimlicoPaymasterActions} from "permissionless/actions/pimlico";
-import { Client, Hash, createClient, createPublicClient, http } from "viem";
+import { Client, Hash, createClient, createPublicClient, http, PrivateKeyAccount } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { polygonMumbai } from "viem/chains";
 import {SAFE_ADDRESSES_MAP} from "./utils/safe";
 import {UserOperation,submitUserOperationPimlico} from "./utils/userOps";
 import { encodeCallData } from "./utils/safe";
 import {multiGetAccountInitCode,multiGetAccountAddress,signUserOp,combineSignatures} from "./multiSignerSafes";
-import type { PrivateKeyAccount } from ".utils/types.js";
 
 dotenv.config();
 
