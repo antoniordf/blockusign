@@ -1,9 +1,11 @@
 // No authentication. demonstrate POST with data in body
 
 const sourceData = {
-  source: "https://en.wikipedia.org/wiki/United_Kingdom",
-  format: "A4",
-  media: "print"
+  title: "Contract 2",
+  signature1: "31d6cfe0d16ae931b73c59d7e0c089c0",
+  signature2: "032f75b3ca02a393196a818328bd32e8",
+  etherscan: "https://etherscan.io/tx/0xdbf40c4548ae32e4f48e8f33eecf4ed0f1447dae67425fd7b9d56ca8176ec620",
+  txHash: "0xdbf40c4548ae32e4f48e8f33eecf4ed0f1447dae67425fd7b9d56ca8176ec620"
 }
 
 // define request

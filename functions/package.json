@@ -2,6 +2,7 @@
   "dependencies": {
     "@chainlink/env-enc": "^1.0.5",
     "@chainlink/functions-toolkit": "^0.2.8",
-    "ethers": "^6.11.1"
+    "ethers": "^6.11.1",
+    "ganache": "^7.9.2"
   }
 }
