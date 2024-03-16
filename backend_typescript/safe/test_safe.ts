@@ -45,8 +45,10 @@ const erc20PaymasterAddress = process.env
 const usdcTokenAddress = process.env
   .PIMLICO_USDC_TOKEN_ADDRESS as `0x${string}`;
 
-// Main function to perform operations
-export default async function proposeSafe(signerAddresses: string[]) {
+// Propose safe function to perform operations
+export default async function proposeSafe(
+  signerAddresses: string[]
+): Promise<UserOperation> {
   // Prompt user for inputs
   const numSigners = signerAddresses.length;
 
@@ -151,7 +153,7 @@ export default async function proposeSafe(signerAddresses: string[]) {
 
   // Calldata for Increase() in contract - Mumbai testnet
   let txCallData = encodeCallData({
-    to: "0x6EE6DEAC2eB4a7753381cbcdbD33eda1A243E777",
+    to: "0x923ecf1a189dE145c065A0c25B30Ad5408f217eC",
     data: "0xe8927fbc",
     value: 0n,
   });
