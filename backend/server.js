@@ -43,6 +43,7 @@ app.post("/generate-pdf", async (req, res) => {
       width: 8,
       height: 8,
       unit: "in",
+      test: true,
       data: {
         title: `${title}`,
         subtitle: `Signature 1: ${signature1} / \nSignature 2: ${signature2}`,
