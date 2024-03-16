@@ -66,7 +66,7 @@ app.post("/generate-pdf", async (req, res) => {
     if (docResponse.ok) {
       cache[cacheKey] = {
         timestamp: Date.now(),
-        data: "https://docamatic.s3.eu-west-1.amazonaws.com/prod/72884da3-501f-4a93-ba24-b71af2586b3c/b70f1202-0617-45be-b748-ac1d60b604f9.pdf", // jsonResponse,
+        data: jsonResponse,
       };
       res.json(cache[cacheKey]);
     } else {
