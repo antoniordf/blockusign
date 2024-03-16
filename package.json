@@ -14,7 +14,9 @@
     "node-fetch": "^3.3.2",
     "pg": "^8.11.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.2",
+    "permissionless": "^0.1.10",
+    "viem": "^2.7.9"
   },
   "engines": {
     "node": "16.x"

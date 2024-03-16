@@ -1,0 +1,16 @@
+import {} from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+import { signerToSafeSmartAccount } from "./signerToSafeSmartAccount.js";
+/**
+ * @description Creates an Simple Account from a private key.
+ *
+ * @returns A Private Key Simple Account.
+ */
+export async function privateKeyToSafeSmartAccount(client, { privateKey, ...rest }) {
+    const privateKeyAccount = privateKeyToAccount(privateKey);
+    return signerToSafeSmartAccount(client, {
+        signer: privateKeyAccount,
+        ...rest
+    });
+}
+//# sourceMappingURL=privateKeyToSafeSmartAccount.js.map
