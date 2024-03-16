@@ -358,3 +358,50 @@ export const multiSignUserOperation = async (
     }
     return signatureBytes
   }
+
+
+
+
+  export const signUserOp = async (
+    userOperation: UserOperation,
+    signer: PrivateKeyAccount,
+    chainId: any,
+    safe4337ModuleAddress: any
+  ) => {
+     return {
+        signer: signer.address,
+        data: await signer.signTypedData({
+          domain: {
+            chainId,
+            verifyingContract: safe4337ModuleAddress
+          },
+          types: EIP712_SAFE_OPERATION_TYPE,
+          primaryType: 'SafeOp',
+          message: {
+            safe: userOperation.sender,
+            nonce: userOperation.nonce,
+            initCode: userOperation.initCode,
+            callData: userOperation.callData,
+            callGasLimit: userOperation.callGasLimit,
+            verificationGasLimit: userOperation.verificationGasLimit,
+            preVerificationGas: userOperation.preVerificationGas,
+            maxFeePerGas: userOperation.maxFeePerGas,
+            maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
+            paymasterAndData: userOperation.paymasterAndData,
+            validAfter: '0x000000000000',
+            validUntil: '0x000000000000',
+            entryPoint: ENTRYPOINT_ADDRESS_V06
+          }
+        })
+      }
+  }
+
+
+  export const combineSignatures = async (signatures: any) => {
+    signatures.sort((left, right) => left.signer.toLowerCase().localeCompare(right.signer.toLowerCase()))
+    let signatureBytes: Address = '0x000000000000000000000000'
+    for (const sig of signatures) {
+      signatureBytes += sig.data.slice(2)
+    }
+    return signatureBytes
+  }
