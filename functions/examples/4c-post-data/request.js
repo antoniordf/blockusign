@@ -27,8 +27,8 @@ const makeRequestMumbai = async () => {
     .readFileSync(path.resolve(__dirname, "source.js"))
     .toString();
 
-  const args = ["JP"];
-  const gasLimit = 300000;
+
+
 
   // Initialize ethers signer and provider to interact with the contracts onchain
   const privateKey = process.env.PRIVATE_KEY; // fetch PRIVATE_KEY
@@ -46,6 +46,20 @@ const makeRequestMumbai = async () => {
 
   const wallet = new ethers.Wallet(privateKey);
   const signer = wallet.connect(provider); // create ethers signer for signing transactions
+
+  // Fetching data from the blockchain for args
+  const contractAddress = "0xa08DfE0A0BAA91058C181C9e8Aafdb600BA28806"; // Replace with your contract address
+  const contractAbi = stringStorageAbi; // Replace with your contract ABI
+  const contract = new ethers.Contract(contractAddress, contractAbi, provider);
+
+  // Assuming you have a method in your contract to retrieve the string values
+  const arg1 = await contract.getStringValue1();
+  const arg2 = await contract.getStringValue2();
+  // Add more lines if you have more arguments to fetch
+
+  const args = [arg1, arg2]; // Replace with your actual arguments
+
+  const gasLimit = 300000;
 
   ///////// START SIMULATION ////////////
 
