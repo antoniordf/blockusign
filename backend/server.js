@@ -5,6 +5,7 @@ import fetch from "node-fetch";
 import User from "./models/User.js";
 import Signature from "./models/Signature.js";
 import Document from "./models/Document.js";
+import proposeSafe from "../safe/test_safe.js";
 
 dotenv.config();
 
@@ -196,6 +197,22 @@ app.post("/generate-pdf", async (req, res) => {
     } else {
       res.status(docResponse.status).json(jsonResponse);
     }
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error.message });
+  }
+});
+
+// Safe test endpoint
+app.post("/safe-test", async (req, res) => {
+  try {
+    const { addresses } = req.body;
+
+    const result = proposeSafe(addresses);
+
+    res.json({ result });
   } catch (error) {
     console.error(error);
     res
