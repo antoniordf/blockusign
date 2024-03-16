@@ -161,9 +161,44 @@ export const multiGetAccountInitCode = async ({
       erc20TokenAddress,
       paymasterAddress,
     })
-
-    return initializer
-  }
+    const initCodeCallData = encodeFunctionData({
+        abi: [
+          {
+            inputs: [
+              {
+                internalType: 'address',
+                name: '_singleton',
+                type: 'address',
+              },
+              {
+                internalType: 'bytes',
+                name: 'initializer',
+                type: 'bytes',
+              },
+              {
+                internalType: 'uint256',
+                name: 'saltNonce',
+                type: 'uint256',
+              },
+            ],
+            name: 'createProxyWithNonce',
+            outputs: [
+              {
+                internalType: 'contract SafeProxy',
+                name: 'proxy',
+                type: 'address',
+              },
+            ],
+            stateMutability: 'nonpayable',
+            type: 'function',
+          },
+        ],
+        functionName: 'createProxyWithNonce',
+        args: [safeSingletonAddress, initializer, saltNonce],
+      })
+    
+      return concatHex([safeProxyFactoryAddress, initCodeCallData])
+    }
 
   export const multiGetAccountAddress = async ({
     client,
@@ -230,4 +265,96 @@ export const multiGetAccountInitCode = async ({
       bytecode: deploymentCode,
       opcode: 'CREATE2',
     })
+  }
+
+
+  const EIP712_SAFE_OPERATION_TYPE = {
+    SafeOp: [
+      { type: 'address', name: 'safe' },
+      { type: 'uint256', name: 'nonce' },
+      { type: 'bytes', name: 'initCode' },
+      { type: 'bytes', name: 'callData' },
+      { type: 'uint256', name: 'callGasLimit' },
+      { type: 'uint256', name: 'verificationGasLimit' },
+      { type: 'uint256', name: 'preVerificationGas' },
+      { type: 'uint256', name: 'maxFeePerGas' },
+      { type: 'uint256', name: 'maxPriorityFeePerGas' },
+      { type: 'bytes', name: 'paymasterAndData' },
+      { type: 'uint48', name: 'validAfter' },
+      { type: 'uint48', name: 'validUntil' },
+      { type: 'address', name: 'entryPoint' }
+    ]
+  }
+   
+import { UserOperation, submitUserOperationPimlico, signUserOperation, txTypes, createCallData } from './utils/userOps'
+import { getAccountNonce, bundlerActions, ENTRYPOINT_ADDRESS_V06 } from 'permissionless'
+import { PrivateKeyAccount } from 'viem'
+
+export const multiSignUserOperation = async (
+    userOperation: UserOperation,
+    signer: PrivateKeyAccount,
+    signer2: PrivateKeyAccount,
+    chainId: any,
+    safe4337ModuleAddress: any
+  ) => {
+    const signatures = [
+      {
+        signer: signer.address,
+        data: await signer.signTypedData({
+          domain: {
+            chainId,
+            verifyingContract: safe4337ModuleAddress
+          },
+          types: EIP712_SAFE_OPERATION_TYPE,
+          primaryType: 'SafeOp',
+          message: {
+            safe: userOperation.sender,
+            nonce: userOperation.nonce,
+            initCode: userOperation.initCode,
+            callData: userOperation.callData,
+            callGasLimit: userOperation.callGasLimit,
+            verificationGasLimit: userOperation.verificationGasLimit,
+            preVerificationGas: userOperation.preVerificationGas,
+            maxFeePerGas: userOperation.maxFeePerGas,
+            maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
+            paymasterAndData: userOperation.paymasterAndData,
+            validAfter: '0x000000000000',
+            validUntil: '0x000000000000',
+            entryPoint: ENTRYPOINT_ADDRESS_V06
+          }
+        })
+      },
+      {
+        signer: signer2.address,
+        data: await signer2.signTypedData({
+          domain: {
+            chainId,
+            verifyingContract: safe4337ModuleAddress
+          },
+          types: EIP712_SAFE_OPERATION_TYPE,
+          primaryType: 'SafeOp',
+          message: {
+            safe: userOperation.sender,
+            nonce: userOperation.nonce,
+            initCode: userOperation.initCode,
+            callData: userOperation.callData,
+            callGasLimit: userOperation.callGasLimit,
+            verificationGasLimit: userOperation.verificationGasLimit,
+            preVerificationGas: userOperation.preVerificationGas,
+            maxFeePerGas: userOperation.maxFeePerGas,
+            maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
+            paymasterAndData: userOperation.paymasterAndData,
+            validAfter: '0x000000000000',
+            validUntil: '0x000000000000',
+            entryPoint: ENTRYPOINT_ADDRESS_V06
+          }
+        })
+      }
+    ]
+    signatures.sort((left, right) => left.signer.toLowerCase().localeCompare(right.signer.toLowerCase()))
+    let signatureBytes: Address = '0x000000000000000000000000'
+    for (const sig of signatures) {
+      signatureBytes += sig.data.slice(2)
+    }
+    return signatureBytes
   }

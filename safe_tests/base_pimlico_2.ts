@@ -10,14 +10,10 @@ import { UserOperation, submitUserOperationPimlico, signUserOperation, txTypes, 
 import { getERC20Decimals, getERC20Balance, transferERC20Token } from './utils/erc20'
 import { encodeCallData } from './utils/safe'
 
-import {multiGetAccountInitCode, multiGetAccountAddress, multiSignUserOperation} from './multiSignerSafes'
-
 dotenv.config()
 const paymaster = 'pimlico'
 
 const privateKey = process.env.PRIVATE_KEY
-const privateKey2 = process.env.PRIVATE_KEY2
-const privateKey3 = process.env.PRIVATE_KEY3
 
 const entryPointAddress = process.env.PIMLICO_ENTRYPOINT_ADDRESS as `0x${string}`
 const multiSendAddress = process.env.PIMLICO_MULTISEND_ADDRESS as `0x${string}`
@@ -70,8 +66,6 @@ if (!privateKey) {
 }
 
 const signer = privateKeyToAccount(privateKey as Hash)
-const signer2 = privateKeyToAccount(privateKey2 as Hash)
-
 console.log('Signer Extracted from Private Key.')
 
 let bundlerClient
@@ -115,29 +109,23 @@ if (chain == 'goerli') {
   throw new Error('Current code only support limited networks. Please make required changes if you want to use custom network.')
 }
 
-let owners = [signer.address, signer2.address]
-let threshold = 2n
-
-const initCode = await multiGetAccountInitCode({
-    owners: owners,
-    threshold: threshold,
-    addModuleLibAddress: chainAddresses.ADD_MODULES_LIB_ADDRESS,
-    safe4337ModuleAddress: chainAddresses.SAFE_4337_MODULE_ADDRESS,
-    safeProxyFactoryAddress: chainAddresses.SAFE_PROXY_FACTORY_ADDRESS,
-    safeSingletonAddress: chainAddresses.SAFE_SINGLETON_ADDRESS,
-    saltNonce: saltNonce,
-    multiSendAddress: multiSendAddress,
-    erc20TokenAddress: usdcTokenAddress,
-    paymasterAddress: erc20PaymasterAddress,
-  })
-
-console.log('\nInit Code Created.', initCode)
+const initCode = await getAccountInitCode({
+  owner: signer.address,
+  addModuleLibAddress: chainAddresses.ADD_MODULES_LIB_ADDRESS,
+  safe4337ModuleAddress: chainAddresses.SAFE_4337_MODULE_ADDRESS,
+  safeProxyFactoryAddress: chainAddresses.SAFE_PROXY_FACTORY_ADDRESS,
+  safeSingletonAddress: chainAddresses.SAFE_SINGLETON_ADDRESS,
+  saltNonce: saltNonce,
+  multiSendAddress: multiSendAddress,
+  erc20TokenAddress: usdcTokenAddress,
+  paymasterAddress: erc20PaymasterAddress,
+})
+console.log('\nInit Code Created:', initCode)
 
 
-const senderAddress = await multiGetAccountAddress({
+const senderAddress = await getAccountAddress({
   client: publicClient,
-  owners: owners,
-  threshold: threshold,
+  owner: signer.address,
   addModuleLibAddress: chainAddresses.ADD_MODULES_LIB_ADDRESS,
   safe4337ModuleAddress: chainAddresses.SAFE_4337_MODULE_ADDRESS,
   safeProxyFactoryAddress: chainAddresses.SAFE_PROXY_FACTORY_ADDRESS,
@@ -171,12 +159,11 @@ const newNonce = await getAccountNonce(publicClient as Client, {
 })
 console.log('\nNonce for the sender received from EntryPoint.')
 
-// Increase() in counter contract
 let txCallData = encodeCallData({
-    to: '0x923ecf1a189de145c065a0c25b30ad5408f217ec',
-    data: '0xe8927fbc',
-    value: 0n,
-  })
+      to: '0x923ecf1a189de145c065a0c25b30ad5408f217ec',
+      data: '0xe8927fbc',
+      value: 0n,
+    })
 
 console.log("callData", txCallData);
 
@@ -186,7 +173,7 @@ const sponsoredUserOperation: UserOperation = {
   initCode: contractCode ? '0x' : initCode,
   callData: txCallData,
   callGasLimit: 1n, // All Gas Values will be filled by Estimation Response Data.
-  verificationGasLimit: 10000000n,
+  verificationGasLimit: 1n,
   preVerificationGas: 1n,
   maxFeePerGas: 1n,
   maxPriorityFeePerGas: 1n,
@@ -197,16 +184,13 @@ const sponsoredUserOperation: UserOperation = {
 const gasEstimate = await bundlerClient.estimateUserOperationGas({
   userOperation: sponsoredUserOperation,
 })
+const maxGasPriceResult = await bundlerClient.getUserOperationGasPrice()
 
 sponsoredUserOperation.callGasLimit = gasEstimate.callGasLimit
 sponsoredUserOperation.verificationGasLimit = gasEstimate.verificationGasLimit
 sponsoredUserOperation.preVerificationGas = gasEstimate.preVerificationGas
-
-const maxGasPriceResult = await bundlerClient.getUserOperationGasPrice()
-
 sponsoredUserOperation.maxFeePerGas = maxGasPriceResult.fast.maxFeePerGas
 sponsoredUserOperation.maxPriorityFeePerGas = maxGasPriceResult.fast.maxPriorityFeePerGas
-
 
 usePaymaster = true;
 
@@ -238,18 +222,12 @@ if (usePaymaster) {
   }
 }
 
-// --- SIGN ---
-
-sponsoredUserOperation.signature = await multiSignUserOperation(
-    sponsoredUserOperation,
-    signer,
-    signer2,
-    chainID,
-    chainAddresses.SAFE_4337_MODULE_ADDRESS,
-  )
-  
-console.log("signature:", sponsoredUserOperation.signature)
-
-// --- SUBMIT ---
+sponsoredUserOperation.signature = await signUserOperation(
+  sponsoredUserOperation,
+  signer,
+  chainID,
+  entryPointAddress,
+  chainAddresses.SAFE_4337_MODULE_ADDRESS,
+)
 
 await submitUserOperationPimlico(sponsoredUserOperation, bundlerClient, entryPointAddress, chain)
