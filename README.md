@@ -24,8 +24,7 @@ We used Safe AA SDK to produce a multi-sig Smart Wallet that can send transactio
 | --------------- | --------------- | --- |
 | Sepolia  | [0xc75af90312a4c66c294FDD32CBb56C705A33D5D7](https://sepolia.etherscan.io/address/0xc75af90312a4c66c294FDD32CBb56C705A33D5D7)  | :white_check_mark:  |
 | Arbitrum Sepolia | [0x923ecf1a189dE145c065A0c25B30Ad5408f217eC](https://sepolia.arbiscan.io/address/0x923ecf1a189dE145c065A0c25B30Ad5408f217eC) |:white_check_mark:  |
-| Chiliz Spicy | [0x62a323Fa1A3cD1dF7798A7Ce662e94ED2eF27AA7](https://testnet.chiliscan.com/address/0x62a323Fa1A3cD1dF7798A7Ce662e94ED2eF27AA7) | 	
-:pensive_face:  |
+| Chiliz Spicy | [0x62a323Fa1A3cD1dF7798A7Ce662e94ED2eF27AA7](https://testnet.chiliscan.com/address/0x62a323Fa1A3cD1dF7798A7Ce662e94ED2eF27AA7) | :pensive:  |
 | Base Sepolia | [0x923ecf1a189dE145c065A0c25B30Ad5408f217eC](https://base-sepolia.blockscout.com/address/0x923ecf1a189dE145c065A0c25B30Ad5408f217eC) |:white_check_mark:  |
 
 
