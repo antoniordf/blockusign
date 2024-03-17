@@ -50,8 +50,9 @@ export default async function deploySafe(
   sponsoredUserOperation: UserOperation
 ) {
   const signers: PrivateKeyAccount[] = [];
-  for (let i = 1; i <= privateKeys.length; i++) {
+  for (let i = 0; i < privateKeys.length; i++) {
     let privateKey = "0x" + privateKeys[i];
+    console.log("privateKey: ", privateKey);
     let signer = privateKeyToAccount(privateKey as Hash);
     signers.push(signer);
   }

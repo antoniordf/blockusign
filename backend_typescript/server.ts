@@ -220,6 +220,7 @@ app.post("/propose-safe", async (req: Request, res: Response) => {
   try {
     const { addresses } = req.body;
     sponsoredUserOperation = await proposeSafe(addresses);
+    res.json({});
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -233,8 +234,8 @@ app.post("/propose-safe", async (req: Request, res: Response) => {
 app.post("/deploy-safe", async (req: Request, res: Response) => {
   try {
     const { privateKeys } = req.body;
-    const deployedSafe = deploySafe(privateKeys, sponsoredUserOperation);
-    res.json({ deployedSafe });
+    const deployedSafe = await deploySafe(privateKeys, sponsoredUserOperation);
+    res.json({});
   } catch (error) {
     console.error(error);
     res.status(500).json({
