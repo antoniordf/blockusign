@@ -8,6 +8,7 @@ import Document from "./models/Document";
 import proposeSafe from "./safe/test_safe";
 import deploySafe from "./safe/deploy_safe";
 import { UserOperation } from "./safe/utils/userOps";
+import cors from "cors";
 
 dotenv.config();
 
@@ -21,6 +22,9 @@ const CACHE_DURATION = 60 * 5 * 1000; // For example, 5 minutes
 // Initialize Express
 const app = express();
 app.use(bodyParser.json());
+
+// Initialise CORS
+app.use(cors({ origin: "http://localhost:3000/" }));
 
 // Define a base GET home endpoint
 app.get("/", (req: Request, res: Response) => {

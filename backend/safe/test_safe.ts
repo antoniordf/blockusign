@@ -55,7 +55,6 @@ export default async function proposeSafe(
   // Check if inputs are valid numbers
   if (isNaN(numSigners)) {
     console.log("Please enter valid numbers.");
-    process.exit(0);
   }
 
   let owners = signerAddresses;
@@ -139,7 +138,6 @@ export default async function proposeSafe(
 
   if (contractCode) {
     console.log("\nThe Safe is already deployed.");
-    process.exit(0);
   } else {
     console.log(
       "\nDeploying a new Safe and executing calldata passed with it (if any)."
