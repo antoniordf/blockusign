@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A brief description of your project",
   "scripts": {
-    "start": "node backend/server.js"
+    "start": "tsx backend/server.ts"
   },
   "dependencies": {
     "@types/node": "^20.11.28",
