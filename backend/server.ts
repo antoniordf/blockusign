@@ -5,7 +5,7 @@ import fetch from "node-fetch";
 import User from "./models/User";
 import Signature from "./models/Signature";
 import Document from "./models/Document";
-import proposeSafe from "./safe/test_safe";
+import proposeSafe from "./safe/init_safe";
 import deploySafe from "./safe/deploy_safe";
 import { UserOperation } from "./safe/utils/userOps";
 import cors from "cors";

@@ -10,8 +10,8 @@ import {
     keccak256,
     zeroAddress,
   } from 'viem'
-  import { InternalTx, encodeMultiSend } from './utils/multisend'
-  import { generateApproveCallData } from './utils/erc20'
+  import { InternalTx, encodeMultiSend } from '../backend/safe/utils/multisend'
+  import { generateApproveCallData } from '../backend/safe/utils/erc20'
   
   export const enableModuleCallData = (safe4337ModuleAddress: `0x${string}`) => {
     return encodeFunctionData({
