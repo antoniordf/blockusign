@@ -25,6 +25,7 @@ const DynamicTextFieldComponent: React.FC<Props> = ({
 }) => {
   const addTextField = () => {
     setTextFields([...textFields, { value: "" }]);
+    setpkFields([...pkFields, { value: "" }]);
   };
 
   return (
@@ -50,8 +51,8 @@ const DynamicTextFieldComponent: React.FC<Props> = ({
             />
             <TextField
               label={`Signature ${index + 1}`}
-              value={textField.value}
-              onChange={(e) => handleTextFieldChange(index, e.target.value)}
+              value={pkFields[index].value}
+              onChange={(e) => handlepkFieldChange(index, e.target.value)}
               fullWidth
               InputProps={{ style: { backgroundColor: "white" } }}
               variant="outlined"

@@ -35,7 +35,7 @@ function App() {
   const handlepkFieldChange = (index: number, value: string) => {
     const updatedpkFields = [...pkFields];
     updatedpkFields[index].value = value;
-    setTextFields(updatedpkFields);
+    setpkFields(updatedpkFields);
   };
 
   const { open } = useWeb3Modal();
@@ -54,6 +54,34 @@ function App() {
 
       const response = await fetch(
         "http://localhost:3000/propose-safe",
+        requestOptions
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await response.json();
+      console.log(data); // Handle response data here
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleSign = async () => {
+    try {
+      const privateKeys = pkFields.map((field) => field.value);
+
+      const requestOptions: RequestInit = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ privateKeys }),
+      };
+
+      const response = await fetch(
+        "http://localhost:3000/deploy-safe",
         requestOptions
       );
 
@@ -135,7 +163,15 @@ function App() {
                   type="button"
                   style={{ padding: "1rem" }}
                 >
-                  Make REST API Call
+                  Propose Document
+                </button>
+                <button
+                  className={styles.actionButton}
+                  onClick={handleSign}
+                  type="button"
+                  style={{ padding: "1rem", marginLeft: "1rem" }}
+                >
+                  Sign
                 </button>
               </Grid>
               <Grid item xs={6} sm={6}>
