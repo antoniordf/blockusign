@@ -148,10 +148,10 @@ async function main() {
         sender: senderAddress,
     });
 
-    // Calldata for Increase() in contract
+    // Calldata for callChainLink() in contract
     let txCallData = encodeCallData({
-        to: "0x6Fb413d980603C4E302aDd938eE27A7D80B0104a",
-        data: "0xe8927fbc",
+        to: "0xc75af90312a4c66c294FDD32CBb56C705A33D5D7",
+        data: "0x27b43b13",
         value: 0n,
     });
 
