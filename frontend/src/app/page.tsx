@@ -96,14 +96,15 @@ function App() {
     }
 
     try {
-
       const sourceData = {
-        title: 'Contract 3',
+        title: "Standard Document",
         signature1: textFields[0].value,
         signature2: textFields[0].value,
-        etherscan: 'https://etherscan.io/tx/0xdbf40c4548ae32e4f48e8f33eecf4ed0f1447dae67425fd7b9d56ca8176ec620',
-        txHash: '0xdbf40c4548ae32e4f48e8f33eecf4ed0f1447dae67425fd7b9d56ca8176ec620'
-      }
+        etherscan:
+          "https://etherscan.io/tx/0xdbf40c4548ae32e4f48e8f33eecf4ed0f1447dae67425fd7b9d56ca8176ec620",
+        txHash:
+          "0xdbf40c4548ae32e4f48e8f33eecf4ed0f1447dae67425fd7b9d56ca8176ec620",
+      };
 
       const requestOptions: RequestInit = {
         method: "POST",
@@ -128,7 +129,6 @@ function App() {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-
   };
 
   return (
