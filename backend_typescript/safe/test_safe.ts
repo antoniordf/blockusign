@@ -17,7 +17,7 @@ import {
   PrivateKeyAccount,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
-import { polygonMumbai } from "viem/chains";
+import { sepolia } from "viem/chains";
 import { SAFE_ADDRESSES_MAP } from "./utils/safe.ts";
 import { UserOperation, submitUserOperationPimlico } from "./utils/userOps.ts";
 import { encodeCallData } from "./utils/safe.ts";
@@ -72,26 +72,26 @@ export default async function proposeSafe(
   let bundlerClient;
   let publicClient;
   let pimlicoPaymasterClient;
-  if (chain == "mumbai") {
+  if (chain == "sepolia") {
     bundlerClient = createClient({
       transport: http(
         `https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`
       ),
-      chain: polygonMumbai,
+      chain: sepolia,
     })
       .extend(bundlerActions(ENTRYPOINT_ADDRESS_V06))
       .extend(pimlicoBundlerActions(ENTRYPOINT_ADDRESS_V06));
 
     publicClient = createPublicClient({
       transport: http(rpcURL),
-      chain: polygonMumbai,
+      chain: sepolia,
     });
 
     pimlicoPaymasterClient = createClient({
       transport: http(
         `https://api.pimlico.io/v2/${chain}/rpc?apikey=${apiKey}`
       ),
-      chain: polygonMumbai,
+      chain: sepolia,
     }).extend(pimlicoPaymasterActions(ENTRYPOINT_ADDRESS_V06));
   } else {
     throw new Error(
@@ -130,7 +130,7 @@ export default async function proposeSafe(
   });
   console.log("\nCounterfactual Sender Address Created:", senderAddress);
   console.log(
-    "Address Link: https://mumbai.polygonscan.com/address/" + senderAddress
+    "Address Link: https://sepolia.etherscan.io/address/" + senderAddress
   );
 
   const contractCode = await publicClient.getBytecode({
@@ -151,9 +151,9 @@ export default async function proposeSafe(
     sender: senderAddress,
   });
 
-  // Calldata for Increase() in contract - Mumbai testnet
+  // Calldata for Increase() in contract
   let txCallData = encodeCallData({
-    to: "0x923ecf1a189dE145c065A0c25B30Ad5408f217eC",
+    to: "0x6Fb413d980603C4E302aDd938eE27A7D80B0104a",
     data: "0xe8927fbc",
     value: 0n,
   });

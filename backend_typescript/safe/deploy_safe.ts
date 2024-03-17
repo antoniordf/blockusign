@@ -17,7 +17,7 @@ import {
   PrivateKeyAccount,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
-import { polygonMumbai } from "viem/chains";
+import { sepolia } from "viem/chains";
 import { SAFE_ADDRESSES_MAP } from "./utils/safe.ts";
 import { UserOperation, submitUserOperationPimlico } from "./utils/userOps.ts";
 import { encodeCallData } from "./utils/safe.ts";
@@ -85,26 +85,26 @@ export default async function deploySafe(
   let bundlerClient;
   let publicClient;
   let pimlicoPaymasterClient;
-  if (chain == "mumbai") {
+  if (chain == "sepolia") {
     bundlerClient = createClient({
       transport: http(
         `https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`
       ),
-      chain: polygonMumbai,
+      chain: sepolia,
     })
       .extend(bundlerActions(ENTRYPOINT_ADDRESS_V06))
       .extend(pimlicoBundlerActions(ENTRYPOINT_ADDRESS_V06));
 
     publicClient = createPublicClient({
       transport: http(rpcURL),
-      chain: polygonMumbai,
+      chain: sepolia,
     });
 
     pimlicoPaymasterClient = createClient({
       transport: http(
         `https://api.pimlico.io/v2/${chain}/rpc?apikey=${apiKey}`
       ),
-      chain: polygonMumbai,
+      chain: sepolia,
     }).extend(pimlicoPaymasterActions(ENTRYPOINT_ADDRESS_V06));
   } else {
     throw new Error(
