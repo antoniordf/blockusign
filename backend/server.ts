@@ -24,7 +24,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Initialise CORS
-app.use(cors({ origin: "http://localhost:3000/" }));
+app.use(cors());
 
 // Define a base GET home endpoint
 app.get("/", (req: Request, res: Response) => {
