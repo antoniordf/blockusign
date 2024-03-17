@@ -94,6 +94,41 @@ function App() {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+
+    try {
+
+      const sourceData = {
+        title: 'Contract 3',
+        signature1: textFields[0].value,
+        signature2: textFields[0].value,
+        etherscan: 'https://etherscan.io/tx/0xdbf40c4548ae32e4f48e8f33eecf4ed0f1447dae67425fd7b9d56ca8176ec620',
+        txHash: '0xdbf40c4548ae32e4f48e8f33eecf4ed0f1447dae67425fd7b9d56ca8176ec620'
+      }
+
+      const requestOptions: RequestInit = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sourceData),
+      };
+
+      const response = await fetch(
+        "https://6043-213-152-241-52.ngrok-free.app/generate-pdf",
+        requestOptions
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await response.json();
+      console.log(data.data.document); // Handle response data here
+      setPdfUrl(data.data.document);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+
   };
 
   return (
