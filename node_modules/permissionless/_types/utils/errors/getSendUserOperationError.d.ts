@@ -1,0 +1,5 @@
+import { BaseError } from "viem";
+import type { SendUserOperationParameters } from "../../actions/bundler/sendUserOperation";
+import type { EntryPoint } from "../../types/entrypoint";
+export declare function getSendUserOperationError<entryPoint extends EntryPoint>(err: BaseError, args: SendUserOperationParameters<entryPoint>): void;
+//# sourceMappingURL=getSendUserOperationError.d.ts.map

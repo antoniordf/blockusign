@@ -1,0 +1,7 @@
+// biome-ignore lint/suspicious/noExplicitAny: it's a generic function, so it's hard to type
+export function getAction(client, 
+// biome-ignore lint/suspicious/noExplicitAny: it's a recursive function, so it's hard to type
+action, actionName = action.name) {
+    return (...params) => client[actionName]?.(...params) ?? action(client, ...params);
+}
+//# sourceMappingURL=getAction.js.map

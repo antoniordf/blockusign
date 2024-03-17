@@ -1,0 +1,19 @@
+import { BaseError, UnknownNodeError } from "viem";
+import { EstimateUserOperationGasError } from "../../errors/estimateUserOperationGas.js";
+import {} from "../../errors/utils.js";
+import { getBundlerError } from "./getBundlerError.js";
+export function getEstimateUserOperationGasError(error, args) {
+    const cause = (() => {
+        const cause = getBundlerError(
+        // biome-ignore lint/complexity/noBannedTypes: <explanation>
+        error, args);
+        // biome-ignore lint/complexity/noBannedTypes: <explanation>
+        if (cause instanceof UnknownNodeError)
+            return error;
+        return cause;
+    })();
+    throw new EstimateUserOperationGasError(cause, {
+        ...args
+    });
+}
+//# sourceMappingURL=getEstimateUserOperationGasError.js.map
