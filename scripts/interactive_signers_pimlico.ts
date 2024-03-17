@@ -9,7 +9,7 @@ import { sepolia } from "viem/chains";
 import {SAFE_ADDRESSES_MAP} from "../backend/safe/utils/safe";
 import {UserOperation,submitUserOperationPimlico} from "../backend/safe/utils/userOps";
 import { encodeCallData } from "../backend/safe/utils/safe";
-import {multiGetAccountInitCode,multiGetAccountAddress,signUserOp,combineSignatures} from "./multiSignerSafes";
+import {multiGetAccountInitCode,multiGetAccountAddress,signUserOp,combineSignatures} from "../backend/safe/multiSignerSafes";
 
 dotenv.config();
 
@@ -140,7 +140,7 @@ async function main() {
         console.log("\nThe Safe is already deployed.");
         process.exit(0);
     } 
-        else {console.log("\nDeploying a new Safe and executing calldata passed with it (if any).");
+        else {console.log("\nProposing a new Safe with calldata passed with it.");   
     }
 
     const newNonce = await getAccountNonce(publicClient as Client, {

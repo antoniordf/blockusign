@@ -140,7 +140,7 @@ export default async function proposeSafe(
     console.log("\nThe Safe is already deployed.");
   } else {
     console.log(
-      "\nDeploying a new Safe and executing calldata passed with it (if any)."
+      "\nProposing a new Safe with calldata passed with it."
     );
   }
 

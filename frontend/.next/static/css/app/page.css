@@ -4,12 +4,17 @@
 h1 {
   display: flex;
   justify-content: center;
-  margin: 12rem auto 2rem auto;
+  margin: 10rem auto 2rem auto;
   font-size: 5rem;
   align-items: center;
   font-family: "MartianGrotesk", sans-serif;
 }
 
+p {
+  text-align: center;
+  font-weight: 200;
+  font-size: 22px;
+}
 /*!******************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[3]!./src/components/Output/Output.css ***!
   \******************************************************************************************************************************************************************************************************************************************************************************/

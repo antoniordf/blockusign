@@ -20,3 +20,22 @@
 
 
 
+Run command line version:
+```
+tsx scripts/interactive_signers_pimlico.ts
+```
+
+Run server:
+```
+tsx backend/server.ts
+```
+
+Run frontend:
+```
+npm run dev (in /frontend)
+```
+
+
+
+
+

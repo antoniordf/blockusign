@@ -1,8 +1,14 @@
 h1 {
   display: flex;
   justify-content: center;
-  margin: 12rem auto 2rem auto;
+  margin: 10rem auto 2rem auto;
   font-size: 5rem;
   align-items: center;
   font-family: "MartianGrotesk", sans-serif;
+}
+
+p {
+  text-align: center;
+  font-weight: 200;
+  font-size: 22px;
 }

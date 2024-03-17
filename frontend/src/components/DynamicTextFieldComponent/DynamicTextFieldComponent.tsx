@@ -40,7 +40,7 @@ const DynamicTextFieldComponent: React.FC<Props> = ({
             style={{ gap: "10px" }}
           >
             <TextField
-              label={`Public Key ${index + 1}`}
+              label={`Address ${index + 1}`}
               color="secondary"
               value={textField.value}
               onChange={(e) => handleTextFieldChange(index, e.target.value)}
